@@ -1,4 +1,5 @@
 1. Requirements
+
 Functional Requirements
 User Registration and Authentication:
 
@@ -142,3 +143,81 @@ Safeguards user data via encryption and secure APIs.
 Scalable Interactions:
 
 Handles user interactions with services, community queries, and feedback submission.
+
+
+
+SQL Script
+------------------------------------
+-- Create Users Table
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Roles Table
+CREATE TABLE Roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name ENUM('customer', 'service_provider', 'admin') NOT NULL,
+    description TEXT
+);
+
+-- Create UserRoles Table (to support many-to-many relationships, if applicable)
+CREATE TABLE UserRoles (
+    user_role_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES Roles(role_id) ON DELETE CASCADE
+);
+
+-- Create Login History Table
+CREATE TABLE LoginHistory (
+    login_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ip_address VARCHAR(45),
+    device_info VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+-- Create UserProfile Table (to store additional user details)
+CREATE TABLE UserProfile (
+    profile_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    full_name VARCHAR(100),
+    phone_number VARCHAR(15),
+    address TEXT,
+    profile_image_url VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+-- Create Notifications Table (to send notifications to users)
+CREATE TABLE Notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+-- Create Permissions Table (to handle fine-grained access control)
+CREATE TABLE Permissions (
+    permission_id INT AUTO_INCREMENT PRIMARY KEY,
+    permission_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT
+);
+
+-- Create RolePermissions Table (to link roles with permissions)
+CREATE TABLE RolePermissions (
+    role_permission_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_id INT NOT NULL,
+    permission_id INT NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES Roles(role_id) ON DELETE CASCADE,
+    FOREIGN KEY (permission_id) REFERENCES Permissions(permission_id) ON DELETE CASCADE
+);
+
