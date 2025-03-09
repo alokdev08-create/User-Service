@@ -69,13 +69,13 @@ Below is an example of the critical API endpoints for the User Service:
 
 HTTP Method	Endpoint	Description
 -------------------------------------------------------------------
-POST	/api/v1/users/register	User registration
-POST	/api/v1/users/login	User login and JWT token generation
-GET	/api/v1/users/profile/{id}	Fetch user profile by ID
-PUT	/api/v1/users/profile/update	Update user profile
-GET	/api/v1/users/login-history	Retrieve user login history
-GET	/api/v1/users/notifications	Fetch user-specific notifications
-POST	/api/v1/users/reset-password	Trigger password reset process
+1. POST	/api/v1/users/register	User registration
+2. POST	/api/v1/users/login	User login and JWT token generation
+3. GET	/api/v1/users/profile/{id}	Fetch user profile by ID
+4. PUT	/api/v1/users/profile/update	Update user profile
+5. GET	/api/v1/users/login-history	Retrieve user login history
+6. GET	/api/v1/users/notifications	Fetch user-specific notifications
+7. POST	/api/v1/users/reset-password	Trigger password reset process
 Database Tables
 Here’s how the database tables interact to implement the User Service:
 
