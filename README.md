@@ -68,6 +68,7 @@ API Endpoints
 Below is an example of the critical API endpoints for the User Service:
 
 HTTP Method	Endpoint	Description
+-------------------------------------------------------------------
 POST	/api/v1/users/register	User registration
 POST	/api/v1/users/login	User login and JWT token generation
 GET	/api/v1/users/profile/{id}	Fetch user profile by ID
